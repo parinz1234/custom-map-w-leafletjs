@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom map with Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <style>
+        #mapid { height: 700px; }
+    </style>
+</head>
+<body>
+    <div id="mapid"></div>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+ <script>
+     document.addEventListener("DOMContentLoaded", function(){
+
+        // Initial map
+        var mymap = L.map('mapid', {
+            center: [14.6073066, 100.2400427],
+            zoom: 15,
+            preferCanvas: true
+        });
+
+        // Add the OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }).addTo(mymap);
+
+
+        // Add current location marker
+        const marker = L.marker([14.6073066, 100.2400427])
+            .bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup()
+            .addTo(mymap);
+
+        // Add current location marker area
+        const markerArea = L.circle([14.6073066, 100.2400427], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0,
+            radius: 500
+        }).addTo(mymap);
+
+
+        const hospitals = [
+            { 
+                lat: 14.6014577,
+                lng: 100.2609129,
+                name: 'โรงพยาบาลสามโก้'
+            }
+        ];
+
+        var hospitalIcon = L.icon({
+            iconUrl: 'asset/icons/hospital.png',
+            iconSize: [32, 32]
+        });
+
+        hospitals.forEach(hospital => {
+            L.marker([hospital.lat, hospital.lng], {icon: hospitalIcon})
+                .bindPopup(hospital.name)
+                .addTo(mymap);
+        })
+    });
+ </script>
+</body>
+</html>
